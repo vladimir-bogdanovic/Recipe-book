@@ -19,7 +19,7 @@
             >Menage recipe <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                <li><a href="#">to shopping list</a></li>
+                <li><a (click)="onAddToShoppingList()" style="cursor: pointer;">to shopping list</a></li>
                 <li><a href="#">edit recipe</a></li>
                 <li><a href="#">delete recipe</a></li>
             </ul>
@@ -33,6 +33,10 @@
 </div>
 <div class="row">
     <div class="col-xs-12">
-        Ingridient
+        <ul class="list-group">
+            <li class="list-group-item"
+            *ngFor="let ingridient of recipeDetail.ingridients">
+            {{ingridient.name}} - {{ingridient.amount}}</li>
+        </ul>
     </div>
 </div>
