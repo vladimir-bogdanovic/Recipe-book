@@ -3,19 +3,35 @@ import { Ingridient } from "../shared/ingridient.model";
 
 
 export class ShoppingListService {
-    ingridientsChanged = new Subject<Ingridient[]>()
+    ingridientsChanged = new Subject<Ingridient[]>();
+    startedEditing = new Subject<number>()
 
   private ingridients: Ingridient[] = [
         new Ingridient('apples', 5),
         new Ingridient('tomatoes', 10),
       ];
 
-      getIngridient(){
+      getIngridients(){
         return this.ingridients.slice()
       }
+
+      getIngridient(index: number){
+        return this.ingridients[index]
+      }
+
       addIngridient (ingridient: Ingridient){
         this.ingridients.push(ingridient);
         this.ingridientsChanged.next(this.ingridients.slice())
+      }
+
+      updateIngridient(index:number, newIngridient: Ingridient){
+        this.ingridients[index] = newIngridient;
+        this.ingridientsChanged.next(this.ingridients.slice());
+      }
+
+      deleteIngredient(index:number){
+        this.ingridients.splice(index, 1);
+        this.ingridientsChanged.next(this.ingridients.slice());
       }
 
       addIngredients(ingridients : Ingridient[]) {
@@ -24,6 +40,5 @@ export class ShoppingListService {
         // }
         this.ingridients.push(...ingridients);
         this.ingridientsChanged.next(this.ingridients.slice())
-
       }
 }
