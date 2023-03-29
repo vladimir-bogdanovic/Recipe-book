@@ -1,13 +1,14 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { map, tap } from "rxjs/operators";
+import { exhaustMap, map, take, tap } from "rxjs/operators";
+import { AuthService } from "../auth/auth.service";
 import { Recipe } from "../recipes/recipe.model";
 import { RecipeService } from "../recipes/recipe.service";
 
 @Injectable({providedIn: 'root'})
 export class DataStoragService {
 
-    constructor(private http : HttpClient, private recipeService : RecipeService) {}
+    constructor(private http : HttpClient, private recipeService : RecipeService, private authService : AuthService) {}
 
 ///////////////
     storeRecipes(){
@@ -21,18 +22,18 @@ export class DataStoragService {
     
 ///////////////
     fetchRecipes(){
-       return this.http
-        .get<Recipe[]>('https://max-ang-section19-default-rtdb.firebaseio.com/recipes.json')
+        return this.http
+            .get<Recipe[]>('https://max-ang-section19-default-rtdb.firebaseio.com/recipes.json')
         .pipe(
             map(recipes => {
                 return recipes.map(recipe => {
-                    return {...recipe, ingridients: recipe.ingridients ? recipe.ingridients : []};      //map na 24 je angular a na 25 je JS
+                    return {...recipe, ingridients: recipe.ingridients ? recipe.ingridients : []};
                     });
                 })
             ,tap( recipes => {
                 this.recipeService.setRecipes(recipes)
                 })
-        )
+            )
     }
 
 }
