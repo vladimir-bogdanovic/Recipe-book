@@ -28,7 +28,7 @@ export class AuthComponent {
         let authObs : Observable<AuthResponseData>;
 
         this.isLoading = true;
-        this.router.navigate(['/recipes']);
+        
 
         if(this.isLoginMode){
            authObs = this.authService.login(email, password)
@@ -38,6 +38,7 @@ export class AuthComponent {
             authObs.subscribe(resData => {
                 console.log(resData);
                 this.isLoading = false;
+                this.router.navigate(['/recipes']);
             }, errorMessage => {
                 console.log(errorMessage);
                 this.error = errorMessage
